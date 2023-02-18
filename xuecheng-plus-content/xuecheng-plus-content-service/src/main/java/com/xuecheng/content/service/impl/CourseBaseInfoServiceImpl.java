@@ -10,11 +10,13 @@ import com.xuecheng.content.mapper.CourseCategoryMapper;
 import com.xuecheng.content.mapper.CourseMarketMapper;
 import com.xuecheng.content.model.dto.AddCourseDto;
 import com.xuecheng.content.model.dto.CourseBaseInfoDto;
+import com.xuecheng.content.model.dto.EditCourseDto;
 import com.xuecheng.content.model.dto.QueryCourseParamsDto;
 import com.xuecheng.content.model.po.CourseBase;
 import com.xuecheng.content.model.po.CourseCategory;
 import com.xuecheng.content.model.po.CourseMarket;
 import com.xuecheng.content.service.CourseBaseInfoService;
+import com.xuecheng.content.service.CourseMarketService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -43,6 +45,10 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
 
     @Autowired
     CourseCategoryMapper courseCategoryMapper;
+
+    @Autowired
+    CourseMarketService courseMarketService;
+
 
 
     @Override
@@ -141,15 +147,15 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         BeanUtils.copyProperties(dto,courseMarket);
         courseMarket.setId(courseId);
         //校验如果课程为收费，价格必须输入
-        String charge = dto.getCharge();
-        if(charge.equals("201001")){//表示收费,必须输入价格, 201001为字典中的收费代码
-            if(courseMarket.getPrice() ==  null || courseMarket.getPrice().floatValue()<=0){
-                XueChengPlusException.cast("课程为收费但是价格不能为空且必须大于0");
-            }
-        }
+//        String charge = dto.getCharge();
+//        if(charge.equals("201001")){//表示收费,必须输入价格, 201001为字典中的收费代码
+//            if(courseMarket.getPrice() ==  null || courseMarket.getPrice().floatValue()<=0){
+//                XueChengPlusException.cast("课程为收费但是价格不能为空且必须大于0");
+//            }
+//        }
 
         //向课程营销表插入一条记录
-        int insert1 = courseMarketMapper.insert(courseMarket);
+        int insert1 = this.saveCourseMarket(courseMarket);
 
         if(insert<=0|| insert1<=0){
             throw new RuntimeException("添加课程失败");
@@ -199,6 +205,64 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
 
         return courseBaseInfoDto;
 
+    }
+
+    @Override
+    public CourseBaseInfoDto updateCourseBase(Long companyId, EditCourseDto dto) {
+        //校验
+        Long courseId = dto.getId();
+        CourseBase courseBase = courseBaseMapper.selectById(courseId);
+        if (courseBase == null) {
+            XueChengPlusException.cast("课程不存在");
+        }
+
+        //判断机构id与数据库中本机构id是否一直
+        //本机构只能修改本机构的信息
+        if (!courseBase.getCompanyId().equals(companyId)) {
+            XueChengPlusException.cast("本机构只能修改本机构的信息");
+        }
+
+        //封装基本信息的数据
+        BeanUtils.copyProperties(dto,courseBase);
+        courseBase.setChangeDate(LocalDateTime.now());//设置修改时间，当前时间
+        //更新基本信息
+        int i = courseBaseMapper.updateById(courseBase);
+
+        //封装营销信息的数据
+        CourseMarket courseMarket = new CourseMarket();
+        BeanUtils.copyProperties(dto,courseMarket);
+
+        //校验如果课程为收费，价格必须输入
+//        String charge = dto.getCharge();
+//        if(charge.equals("201001")){//表示收费,必须输入价格, 201001为字典中的收费代码
+//            if(courseMarket.getPrice() ==  null || courseMarket.getPrice().floatValue()<=0){
+//                XueChengPlusException.cast("课程为收费但是价格不能为空且必须大于0");
+//            }
+//        }
+//
+//        //请求数据库
+//        //对营销表 有则更新，没有则添加
+//        boolean b = courseMarketService.saveOrUpdate(courseMarket);
+        saveCourseMarket(courseMarket);
+        CourseBaseInfoDto courseBaseInfo = this.getCourseBaseInfo(courseId);
+        return courseBaseInfo;
+    }
+
+    //抽取营销信息的保存
+    private int saveCourseMarket(CourseMarket courseMarket){
+        //校验如果课程为收费，价格必须输入
+        String charge = courseMarket.getCharge();
+        if (StringUtils.isBlank(charge)) {
+            XueChengPlusException.cast("收费规则没有选择");
+        }
+        if(charge.equals("201001")){//表示收费,必须输入价格, 201001为字典中的收费代码
+            if(courseMarket.getPrice() ==  null || courseMarket.getPrice().floatValue()<=0){
+                XueChengPlusException.cast("课程为收费但是价格不能为空且必须大于0");
+            }
+        }
+        //保存
+        boolean b = courseMarketService.saveOrUpdate(courseMarket);
+        return b?1:0;
     }
 
 
