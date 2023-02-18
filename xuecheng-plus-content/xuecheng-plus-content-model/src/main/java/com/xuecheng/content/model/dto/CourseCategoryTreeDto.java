@@ -10,6 +10,7 @@ import java.util.List;
  * @version 1.0
  * @description TODO
  * @date 2022/12/10 10:08
+ * 课程分类二级列表
  */
 @Data
 public class CourseCategoryTreeDto extends CourseCategory {

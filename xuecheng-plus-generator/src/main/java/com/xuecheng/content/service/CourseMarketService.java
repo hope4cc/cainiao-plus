@@ -1,7 +1,7 @@
 package com.xuecheng.content.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.xuecheng.content.model.po.CourseMarket;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
@@ -9,7 +9,7 @@ import com.xuecheng.content.model.po.CourseMarket;
  * </p>
  *
  * @author caicai
- * @since 2023-02-06
+ * @since 2023-02-13
  */
 public interface CourseMarketService extends IService<CourseMarket> {
 

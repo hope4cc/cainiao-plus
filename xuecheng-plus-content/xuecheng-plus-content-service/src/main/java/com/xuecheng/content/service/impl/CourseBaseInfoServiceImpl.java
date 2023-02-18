@@ -2,6 +2,7 @@ package com.xuecheng.content.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xuecheng.base.exception.XueChengPlusException;
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
 import com.xuecheng.content.mapper.CourseBaseMapper;
@@ -82,35 +83,39 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
     @Transactional
     @Override
     public CourseBaseInfoDto createCourseBase(Long companyId, AddCourseDto dto) {
-        //对参数进行合法性的校验
-        //合法性校验
-        if (StringUtils.isBlank(dto.getName())) {
-            throw new RuntimeException("课程名称为空");
-        }
 
-        if (StringUtils.isBlank(dto.getMt())) {
-            throw new RuntimeException("课程分类为空");
-        }
+//        //对参数进行合法性的校验
+//        //合法性校验
+//        if (StringUtils.isBlank(dto.getName())) {
+////            throw new RuntimeException("课程名称为空");
+//            XueChengPlusException.cast("课程名称为空");
+//        }
+//
+//        if (StringUtils.isBlank(dto.getMt())) {
+//            throw new RuntimeException("课程分类为空");
+//        }
+//
+//        if (StringUtils.isBlank(dto.getSt())) {
+//            throw new RuntimeException("课程分类为空");
+//        }
+//
+//        if (StringUtils.isBlank(dto.getGrade())) {
+//            throw new RuntimeException("课程等级为空");
+//        }
+//
+//        if (StringUtils.isBlank(dto.getTeachmode())) {
+//            throw new RuntimeException("教育模式为空");
+//        }
+//
+//        if (StringUtils.isBlank(dto.getUsers())) {
+//            throw new RuntimeException("适应人群为空");
+//        }
+//
+//        if (StringUtils.isBlank(dto.getCharge())) {
+//            throw new RuntimeException("收费规则为空");
+//        }
 
-        if (StringUtils.isBlank(dto.getSt())) {
-            throw new RuntimeException("课程分类为空");
-        }
 
-        if (StringUtils.isBlank(dto.getGrade())) {
-            throw new RuntimeException("课程等级为空");
-        }
-
-        if (StringUtils.isBlank(dto.getTeachmode())) {
-            throw new RuntimeException("教育模式为空");
-        }
-
-        if (StringUtils.isBlank(dto.getUsers())) {
-            throw new RuntimeException("适应人群为空");
-        }
-
-        if (StringUtils.isBlank(dto.getCharge())) {
-            throw new RuntimeException("收费规则为空");
-        }
          //对数据进行封装，调用mapper进行数据持久化
         CourseBase courseBase = new CourseBase();
         //将传入dto的数据设置到 courseBase对象
@@ -137,9 +142,9 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         courseMarket.setId(courseId);
         //校验如果课程为收费，价格必须输入
         String charge = dto.getCharge();
-        if(charge.equals("201001")){//收费
-            if(courseMarket.getPrice() == null || courseMarket.getPrice().floatValue()<=0){
-                throw new RuntimeException("课程为收费但是价格为空");
+        if(charge.equals("201001")){//表示收费,必须输入价格, 201001为字典中的收费代码
+            if(courseMarket.getPrice() ==  null || courseMarket.getPrice().floatValue()<=0){
+                XueChengPlusException.cast("课程为收费但是价格不能为空且必须大于0");
             }
         }
 
@@ -169,6 +174,8 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         CourseMarket courseMarket = courseMarketMapper.selectById(courseId);
 
         CourseBaseInfoDto courseBaseInfoDto = new CourseBaseInfoDto();
+
+        //拷贝查询出来的数据
         BeanUtils.copyProperties(courseBase,courseBaseInfoDto);
         BeanUtils.copyProperties(courseMarket,courseBaseInfoDto);
 
