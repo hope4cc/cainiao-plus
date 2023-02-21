@@ -1,8 +1,6 @@
-
-#微服务配置
 spring:
   application:
-    name: content-api
+    name: content-service
   cloud:
     nacos:
       server-addr: 192.168.1.4:8848
@@ -33,21 +31,15 @@ spring:
   profiles:
     active: dev
 
+    #已放到nacos
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://1.15.87.229:3306/xcplus_content?serverTimezone=UTC&userUnicode=true&useSSL=false&
+#    username: root
+#    password: root
 
-
-
-# swagger 文档配置
-#nacos提供了shared-configs可以引入公用配置。
-#在content-api中配置了swagger，所有的接口工程 都需要配置swagger，
-#这里就可以将swagger的配置定义为一个公用配置，哪个项目用引入即可。
-#swagger:
-#  title: "学成在线内容管理系统"
-#  description: "内容系统管理系统对课程相关信息进行业务管理数据"
-#  base-package: com.xuecheng
-#  enabled: true
-#  version: 1.0.0
 # 日志文件配置路径
 #logging:
 #  config: classpath:log4j2-dev.xml
-#  level:
-#    org.springframework.cloud.gateway: trace
+#mybatis-plus:
+#  mapper-locations: mapper/*.xml
