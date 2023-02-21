@@ -4,6 +4,7 @@ import com.xuecheng.system.model.po.Dictionary;
 import com.xuecheng.system.service.DictionaryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ import java.util.List;
  * @author itcast
  */
 @Slf4j
+@CrossOrigin
 @RestController
 public class DictionaryController  {
 
