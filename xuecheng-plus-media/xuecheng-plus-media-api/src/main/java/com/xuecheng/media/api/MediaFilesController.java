@@ -40,6 +40,18 @@ public class MediaFilesController {
 
     }
 
+    /**
+     * consumes 指定处理请求的提交内容类型（Content-Type），例如application/json, text/html;
+     * @RequestPart 这个注解用在multipart/form-data表单提交请求的方法上。
+     * 支持的请求方法的方式MultipartFile，属于Spring的MultipartResolver类。这个请求是通过http协议传输的
+     *
+     * @RequestParam 支持’application/json’，也同样支持multipart/form-data请求
+     *
+     * @param filedata 文件
+     * @param folder 桶下面的子目录
+     * @param objectName 对象名称
+     * @return
+     */
     @RequestMapping(value = "/upload/coursefile", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public UploadFileResultDto upload(@RequestPart("filedata") MultipartFile filedata,
                                       @RequestParam(value = "folder",required=false) String folder,
@@ -48,7 +60,7 @@ public class MediaFilesController {
         Long companyId = 1232141425L;
         UploadFileParamsDto uploadFileParamsDto = new UploadFileParamsDto();
         String contentType = filedata.getContentType();
-        uploadFileParamsDto.setContentType(contentType);
+        uploadFileParamsDto.setContentType(contentType);//文件类型
         uploadFileParamsDto.setFileSize(filedata.getSize());//文件大小
         if (contentType.indexOf("image") >= 0) {
             //是个图片

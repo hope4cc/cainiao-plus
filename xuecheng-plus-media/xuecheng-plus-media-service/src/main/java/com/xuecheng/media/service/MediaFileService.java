@@ -6,6 +6,7 @@ import com.xuecheng.media.model.dto.QueryMediaParamsDto;
 import com.xuecheng.media.model.dto.UploadFileParamsDto;
 import com.xuecheng.media.model.dto.UploadFileResultDto;
 import com.xuecheng.media.model.po.MediaFiles;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -42,4 +43,19 @@ public interface MediaFileService {
  */
  public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, byte[] bytes,String folder,String objectName);
 
+ /**
+  * 将文件信息入库
+  * @param companyId
+  * @param fileId
+  * @param uploadFileParamsDto
+  * @param bucket
+  * @param objectName
+  * @return
+  * 声明式事务基于动态代理也就是cglib(默认)和jkd,
+  * cgb原理是继承被代理类。
+  * 如果方法被private修饰，可想而知代理类无法重写
+  *
+  */
+ @Transactional
+ public MediaFiles addMediaFilesToDb(Long companyId,String fileId,UploadFileParamsDto uploadFileParamsDto,String bucket,String objectName);
 }

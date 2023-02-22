@@ -57,6 +57,8 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
+
+<!--        springboot集成Minio -->
         <dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>

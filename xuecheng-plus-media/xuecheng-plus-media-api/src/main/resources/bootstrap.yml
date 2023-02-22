@@ -1,5 +1,10 @@
 #微服务配置
 spring:
+  servlet:
+    multipart:
+      enabled: true #默认支持文件上传
+      max-file-size: -1 #不做限制
+      max-request-size: -1 #不做限制
   application:
     name: media-api
   cloud:
@@ -26,4 +31,5 @@ spring:
             refresh: true
   profiles:
     active: dev
+
 

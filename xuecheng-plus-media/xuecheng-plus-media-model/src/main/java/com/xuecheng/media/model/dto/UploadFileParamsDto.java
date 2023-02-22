@@ -21,6 +21,7 @@ public class UploadFileParamsDto {
 
  /**
   * 文件content-type
+  * 资源的媒体类型
  */
  private String contentType;
 

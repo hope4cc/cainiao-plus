@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
 public class MinioConfig {
 
     //读取参数
-
     @Value("${minio.endpoint}")
     private String endpoint;
     @Value("${minio.accessKey}")
