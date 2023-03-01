@@ -1,9 +1,11 @@
 package com.xuecheng.content.api;
 
+import com.xuecheng.content.model.dto.BindTeachplanMediaDto;
 import com.xuecheng.content.model.dto.SaveTeachplanDto;
 import com.xuecheng.content.model.dto.TeachplanDto;
 import com.xuecheng.content.service.TeachplanService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,11 +28,19 @@ public class TeachplanController {
 
     @GetMapping("/teachplan/{courserId}/tree-nodes")
     public List<TeachplanDto> getTreeNodes(@PathVariable Long courserId) {
-        return teachplanService.findTeachplayTree(courserId);
+        return teachplanService.findTeachplanTree(courserId);
     }
 
     @PostMapping("/teachplan")
     public void SaveTeachplan(@RequestBody SaveTeachplanDto dto) {
          teachplanService.saveTeachplan(dto);
+    }
+
+
+
+    @ApiOperation(value = "课程计划和媒资信息绑定")
+    @PostMapping("/teachplan/association/media")
+    public void associationMedia(@RequestBody BindTeachplanMediaDto bindTeachplanMediaDto) {
+        teachplanService.associationMedia(bindTeachplanMediaDto);
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author Mr.M
+ * MinIO配置类
  * @version 1.0
  * @description TODO
  * @date 2022/10/13 15:17
@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 public class MinioConfig {
 
     //读取参数
+    //url
     @Value("${minio.endpoint}")
     private String endpoint;
     @Value("${minio.accessKey}")

@@ -44,19 +44,21 @@ public class MinIOTest {
             }
 
             // Upload '/home/user/Photos/asiaphotos.zip' as object name 'asiaphotos-2015.zip' to bucket
-            // 'asiatrip'.
+            // 'asiatrip'./Users/hope4cc/Desktop/IMG_9003.MOV
             minioClient.uploadObject(
                     UploadObjectArgs.builder()
                             .bucket("testbucket")
-                            .object("test/111.jpg")
-                            .filename("/Users/hope4cc/Home/111.jpg")
+                            .object("test/IMG_9003.MOV")
+                            .filename("/Users/hope4cc/Desktop/IMG_9003.MOV")
                             .build());
-            System.out.println("上传成功了");
-            System.out.println("'/Users/hope4cc/Home/111.jpg' is successfully uploaded as " + "object '111.jpg' to bucket 'public'.");
+            System.out.println("上传成功了!");
+            System.out.println("'/Users/hope4cc/Desktop/IMG_9003.MOV' is successfully uploaded as " + "object '111.jpg' to bucket 'public'.");
         } catch (MinioException e) {
             System.out.println("Error occurred: " + e);
             System.out.println("HTTP trace: " + e.httpTrace());
+            System.out.println("上传成功了!!");
         }
+        System.out.println("上传成功了!!!");
     }
 
     static MinioClient minioClient =

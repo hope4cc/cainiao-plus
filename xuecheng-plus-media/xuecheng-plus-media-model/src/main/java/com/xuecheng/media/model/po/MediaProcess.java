@@ -37,6 +37,7 @@ public class MediaProcess implements Serializable {
      */
     private String bucket;
 
+
     private String filePath;
 
     /**
